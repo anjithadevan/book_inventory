@@ -3,6 +3,11 @@ from django.db import models
 
 
 # Create your models here.
+def get_email(self):
+    return self.email
+
+
+User.add_to_class("__str__",get_email)
 
 
 class Book(models.Model):
@@ -21,4 +26,7 @@ class BorrowedBook(models.Model):
     user = models.ForeignKey(User,
                              related_name="get_user",
                              on_delete=models.CASCADE)
-    borrowed_date = models.DateTimeField()
+    date = models.DateTimeField()
+
+    def __str__(self):
+        return self.user

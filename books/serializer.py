@@ -2,6 +2,8 @@ from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.models import User
 
+from books.models import BorrowedBook, Book
+
 
 class UserSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(
@@ -37,3 +39,9 @@ class UserLoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('email', 'password')
+
+
+class BorrowBooksSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BorrowedBook
+        fields = ('book_id', 'date')
