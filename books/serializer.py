@@ -6,17 +6,18 @@ from books.models import BorrowedBook, Book
 
 
 class UserSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(
+        validators=[UniqueValidator(queryset=User.objects.all())]
+    )
     email = serializers.EmailField(
         required=True,
         validators=[UniqueValidator(queryset=User.objects.all())]
     )
     first_name = serializers.CharField(
-        required=False,
-        validators=[UniqueValidator(queryset=User.objects.all())]
+        required=False
     )
     last_name = serializers.CharField(
-        required=False,
-        validators=[UniqueValidator(queryset=User.objects.all())]
+        required=False
     )
     password = serializers.CharField(required=True, min_length=8)
 
@@ -29,7 +30,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'first_name', 'last_name', 'email', 'password')
+        fields = ('id', 'first_name', 'last_name', 'email', 'password', 'username')
 
 
 class UserLoginSerializer(serializers.ModelSerializer):
