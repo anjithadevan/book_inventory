@@ -10,6 +10,8 @@ from django.http import HttpResponse
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
     list_display = ('name', 'author', 'book_count')
+    list_display_links = ('name',)
+    list_editable = ('author', 'book_count')
     ordering = ('name',)
     search_fields = ('name',)
 

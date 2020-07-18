@@ -30,17 +30,24 @@ class UserLoginViewset(viewsets.ModelViewSet):
     queryset = User.objects.all()
 
     def create(self, request, *args, **kwargs):
-        response = {}
-        username = request.data.get('username')
-        password = request.data.get('password')
-        user = authenticate(username=username, password=password)
-        if user:
-            token, _ = Token.objects.get_or_create(user=user)
-            response['token'] = token.key
-            response['status'] = 'success'
-            return Response(response, status=HTTP_200_OK)
-        response['status'] = 'failed'
-        return Response(response, status=HTTP_401_UNAUTHORIZED)
+        serializer = UserLoginSerializer(data=request.data)
+        if serializer.is_valid():
+            response = {}
+            username = request.data.get('email')
+            password = request.data.get('password')
+            user = authenticate(username=username, password=password)
+            if user:
+                token, _ = Token.objects.get_or_create(user=user)
+                response['token'] = token.key
+                response['status'] = 'success'
+                return Response(response, status=HTTP_200_OK)
+            response['status'] = 'failed'
+            return Response(response, status=HTTP_401_UNAUTHORIZED)
+        else:
+            return Response(
+                serializer.errors,
+                status=HTTP_400_BAD_REQUEST
+            )
 
 
 class BorrowBooksViewset(viewsets.ModelViewSet):
