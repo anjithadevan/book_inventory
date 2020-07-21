@@ -34,7 +34,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserLoginSerializer(serializers.ModelSerializer):
-    email = serializers.EmailField(label='Email', write_only=True, required=True, validators=[UniqueValidator(queryset=User.objects.all())])
+    email = serializers.EmailField(label='Email', write_only=True, required=True)
     password = serializers.CharField(label='Password', write_only=True, min_length=8, required=True)
 
     class Meta:
